@@ -31,73 +31,72 @@ var newDeck = new Shuffle(deck);
 //-------------------Initial Dealt Player Cards & Values----------------------//
 ////////////////////////////////////////////////////////////////////////////////
 var playerCards = [];
+var cardValues=[];
 var dealer = [];
 
 function deal(){
 playerCards = newDeck.splice(0,2);
-
-var cardValues =[];
-  for(var i=0; i < player1.length; i++){
-  cardValues = cardValues.concat(player1[i][1]);
-  console.log(cardValues);
-}
+console.log(playerCards);
 }
 
-//---------------------------------Split?-------------------------------------//
-////////////////////////////////////////////////////////////////////////////////
-function split(){
-  deal();
-  isDoubleValues();
-  var results;
-
-  if (results !== []){
-    var splitArray = [], size = 1;
-
-    while (results.length > 0)
-      splitArray.push(results.splice(0, size));
-      return splitArray;
+function values(){
+  var cardValues =[];
+    for(var i=0; i < playerCards.length; i++){
+    cardValues = cardValues.concat(playerCards[i][1]);
+    console.log(cardValues);
 }}
-
-
-function isDoubleValues(){
-  deal();
-  var cardValues;
-
-  var sorted_values = cardValues.slice().sort();
-  var results = [];
-
-  for (var i = 0; i < cardValues.length - 1; i++) {
-      if (sorted_values[i + 1] == sorted_values[i]) {
-          results.push(sorted_arr[i]);
-          return results;
-}}
-}
 
 //----------------------------------Hit?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){
-  isBust();
 
   var extraCard=[];
-  if (isBust(player1) === false){
    extraCard = newDeck.splice(0,1);
-   return player1.concat(extraCard);
-  } console.log("Can't hit, you busted");
+   console.log(extraCard);
+   playerCards = playerCards.concat(extraCard);
+   console.log(playerCards);
+   return playerCards;
 }
 
 //----------------------------------Bust?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 
-function isBust(player1){
-  deal();
-  var cardValues;
+function isBust(){
 
   var total = cardValues.reduce(function(a, b) {
   return a + b;
   }, 0);
   if (total > 21){
     console.log("Bust");
-    return true;
-  } console.log("Play more?");
-  return false;
+  } console.log("Hit?");
 }
+
+//---------------------------------Split?-------------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+// function split(){
+//   deal();
+//   isDoubleValues();
+//   var results;
+//
+//   if (results !== []){
+//     var splitArray = [], size = 1;
+//
+//     while (results.length > 0)
+//       splitArray.push(results.splice(0, size));
+//       return splitArray;
+// }}
+//
+//
+// function isDoubleValues(){
+//   deal();
+//   var cardValues;
+//
+//   var sorted_values = cardValues.slice().sort();
+//   var results = [];
+//
+//   for (var i = 0; i < cardValues.length - 1; i++) {
+//       if (sorted_values[i + 1] == sorted_values[i]) {
+//           results.push(sorted_arr[i]);
+//           return results;
+// }}
+// }
