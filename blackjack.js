@@ -1,6 +1,13 @@
+//--------------------------------Constants-----------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+var playerCards = [];
+var cardValues=[];
+var total = [];
+var dealer = [];
+
+
 //-------------------------Original Unshuffled Deck---------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-
 var deck = [
   [ "AC", [1]], [ "2C", [2]], [ "3C", [3]], [ "4C", [4]], [ "5C", [5]], [ "6C", [6]], [ "7C", [7]], [ "8C", [8]], [ "9C", [9]], [ "10C", [10]], [ "JC", [10]], [ "QC", [10]], [ "KC", [10]],
   [ "AH", [1]], [ "2H", [2]], [ "3H", [3]], [ "4H", [4]], [ "5H", [5]], [ "6H", [6]], [ "7H", [7]], [ "8H", [8]], [ "9H", [9]], [ "10H", [10]], [ "JH", [10]], [ "QH", [10]], [ "KH", [10]],
@@ -28,32 +35,29 @@ function Shuffle(cards){
 ////////////////////////////////////////////////////////////////////////////////
 var newDeck = new Shuffle(deck);
 
-//-------------------Initial Dealt Player Cards & Values----------------------//
+//-------------------------Initial Dealt Player Cards-------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-var playerCards = [];
-var cardValues=[];
-var dealer = [];
-
 function deal(){
-playerCards = newDeck.splice(0,2);
-console.log(playerCards);
+  playerCards = newDeck.splice(0,2);
+  console.log(playerCards);
+  return playerCards;
 }
 
-function values(){
-  var cardValues =[];
-    for(var i=0; i < playerCards.length; i++){
-    cardValues = cardValues.concat(playerCards[i][1]);
-    console.log(cardValues);
-}}
+//-------------------------------Total Card Value-----------------------------//
+////////////////////////////////////////////////////////////////////////////////
+function getTotal(){
+  for(var i=0; i < playerCards.length; i++){
+  cardValues = cardValues.concat(playerCards[i][1]);
+  total = cardValues.reduce(function(a, b) {
+  return a + b;
+}, 0);}
+ console.log(total);
+}
 
 //----------------------------------Hit?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){
-
-  var extraCard=[];
-   extraCard = newDeck.splice(0,1);
-   console.log(extraCard);
-   playerCards = playerCards.concat(extraCard);
+   playerCards = playerCards.concat(newDeck.splice(0,1));
    console.log(playerCards);
    return playerCards;
 }
@@ -62,13 +66,11 @@ function hit(){
 ////////////////////////////////////////////////////////////////////////////////
 
 function isBust(){
-
-  var total = cardValues.reduce(function(a, b) {
-  return a + b;
-  }, 0);
-  if (total > 21){
-    console.log("Bust");
-  } console.log("Hit?");
+ if (total == 21){
+   console.log("Blackjack!");
+ } else if (total > 22){
+   console.log("Bust");
+ } console.log("hit");
 }
 
 //---------------------------------Split?-------------------------------------//
