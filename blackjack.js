@@ -1,9 +1,11 @@
 //--------------------------------Constants-----------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 var playerCards = [];
-var cardValues=[];
-var total = [];
-var dealer = [];
+var dealerCards = [];
+var playerValues= [];
+var dealerValues= [];
+var totalPlayerValue = [];
+var totalDealerValue = [];
 
 
 //-------------------------Original Unshuffled Deck---------------------------//
@@ -35,44 +37,66 @@ function Shuffle(cards){
 ////////////////////////////////////////////////////////////////////////////////
 var newDeck = new Shuffle(deck);
 
-//-------------------------Initial Dealt Player Cards-------------------------//
+//----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){
   playerCards = newDeck.splice(0,2);
+  dealerCards = newDeck.splice(0,1);
   console.log(playerCards);
-  return playerCards;
+  console.log(dealerCards);
+  getTotal(playerCards, playerValues, totalPlayerValue);
+  getTotal(dealerCards, dealerValues, totalDealerValue);
 }
 
-//-------------------------------Total Card Value-----------------------------//
+//------------------------------------Hit?------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-function getTotal(){
-  for(var i=0; i < playerCards.length; i++){
-  cardValues = cardValues.concat(playerCards[i][1]);
+function hit(){
+   playerCards = additionalCard(playerCards);
+   getTotal(playerCards, playerValues, totalPlayerValue);
+  console.log(playerValues);
+}
+
+
+//-----------------------------------Bust?------------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+
+function isBust(){
+ if (totalPlayerValue == 21){
+   console.log("Blackjack!");
+ } else if (totalPlayerValue > 22){
+   console.log("Bust");
+ } console.log("hit");
+}
+
+//-----------------------------------Stand------------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+
+function stand(){
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//------------------------------REUSABLE FUNCTIONS----------------------------//
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//--------------------------Total Card Value Function-------------------------//
+////////////////////////////////////////////////////////////////////////////////
+function getTotal(cardHolder, cardValues, total){
+  total = [];
+  for(var i=0; i < cardHolder.length; i++){
+  cardValues = cardValues.concat(cardHolder[i][1]);
   total = cardValues.reduce(function(a, b) {
   return a + b;
 }, 0);}
  console.log(total);
 }
-
-//----------------------------------Hit?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-function hit(){
-   playerCards = playerCards.concat(newDeck.splice(0,1));
-   console.log(playerCards);
-   return playerCards;
-}
-
-//----------------------------------Bust?-------------------------------------//
+//---------------------------Additional Card Function-------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-
-function isBust(){
- if (total == 21){
-   console.log("Blackjack!");
- } else if (total > 22){
-   console.log("Bust");
- } console.log("hit");
+function additionalCard(cardHolder){
+   cardHolder = cardHolder.concat(newDeck.splice(0,1));
+   return cardHolder;
 }
-
 //---------------------------------Split?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 // function split(){
