@@ -24,26 +24,26 @@ function Shuffle(cards){
 ////////////////////////////////////////////////////////////////////////////////
 var playerCards = [];
 var dealerCards = [];
-var newDeck = new Shuffle(deck);//----------------------------------------------shuffled deck
+var newDeck = new Shuffle(deck);//---------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){
-  playerCards = newDeck.splice(0,2);//------------------------------------------dealt player cards
-  dealerCards = newDeck.splice(0,1);//------------------------------------------dealt dealer cards
+  playerCards = newDeck.splice(0,2);//-----------------------------------------------dealt player cards
+  dealerCards = newDeck.splice(0,1);//-----------------------------------------------dealt dealer cards
   cardsValueOnly(playerCards);
-  console.log(playerCards);//---------------------------------------------------shows player card values
+  console.log(playerCards);//--------------------------------------------------------shows player card values
   cardsValueOnly(dealerCards);
-  console.log(dealerCards);//---------------------------------------------------shows dealer card values
+  console.log(dealerCards);//--------------------------------------------------------shows dealer card values
 }
 
 //------------------------------------Hit?------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){
-   playerCards = additionalCard(playerCards);//---------------------------------player cards +1
+   playerCards = additionalCard(playerCards);//--------------------------------------player cards +1
    var totalValues = getTotal(playerCards);
-   isBust(totalValues);//-------------------------------------------------------player situation: Bust || Blackjack || Hit
-   console.log(totalValues);
+   isBust(totalValues);//------------------------------------------------------------player situation: Bust || Blackjack || Hit
+   console.log(totalValues);//-------------------------------------------------------total value
 }
 
 //-----------------------------------Stand------------------------------------//
