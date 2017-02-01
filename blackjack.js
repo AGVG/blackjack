@@ -22,26 +22,26 @@ function Shuffle(cards){
 
 //--------------------------------Constants-----------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-var playerCards = [];
-var dealerCards = [];
+var player = [];
+var dealer = [];
 var newDeck = new Shuffle(deck);//---------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){
-  playerCards = newDeck.splice(0,2);//-----------------------------------------------dealt player cards
-  dealerCards = newDeck.splice(0,1);//-----------------------------------------------dealt dealer cards
-  console.log(cardsValueOnly(playerCards));//----------------------------------------shows player card values
-  console.log(cardsValueOnly(dealerCards));//----------------------------------------shows dealer card values
-  aceFinder(playerCards);//----------------------------------------------------------shows in the output ace as 1 or 11
-  aceFinder(dealerCards);
+  player = newDeck.splice(0,2);//----------------------------------------------------dealt player cards
+  dealer = newDeck.splice(0,1);//----------------------------------------------------dealt dealer cards
+  console.log(cardsValueOnly(player));//---------------------------------------------shows player card values
+  console.log(cardsValueOnly(dealer));//---------------------------------------------shows dealer card values
+  aceFinder(player);//---------------------------------------------------------------shows in the output ace as 1 or 11
 }
 
 //------------------------------------Hit?------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){
-   playerCards = additionalCard(playerCards);//--------------------------------------player cards +1
-   var totalValues = getTotal(playerCards);
+   player = additionalCard(player);//------------------------------------------------player cards +1
+   aceFinder(player);
+   var totalValues = getTotal(player);
    canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit
    console.log(totalValues);//-------------------------------------------------------total value
 }
@@ -50,10 +50,38 @@ function hit(){
 ////////////////////////////////////////////////////////////////////////////////
 
 function stand(){
-  while (getTotal(dealerCards) < getTotal(playerCards) &&
-         getTotal(dealerCards) > 16 ){//---------------------------------------------dealer cannot stand under 17
-    dealerCards = additionalCard(dealerCards);//-------------------------------------deal additional card to dealer, until he either wins or busts.
-  } console.log (dealerCards); return dealerCards;
+  var playerValues = cardsValueOnly(player);
+  var totalplayer = (playerValues.find(ace) === 1) ?
+                     showAceValues(player) : getTotal(player);//---------------------did the player stand with an ace
+
+  var totaldealer = getTotal(dealer);
+
+  while (totaldealer < 17 ||//-------------------------------------------------------dealer cannot stand under 17
+         totaldealer < totalplayer ){
+
+           if (aceFinder(dealer) < totalplayer){//-------------------------------------------------checks if dealer has an Ace
+             var aceOne = getTotal(dealer);//----------------------------------------Ace as value 1
+             var aceEleven = aceOne+10;//--------------------------------------------Ace as value 11
+
+             switch (true){
+               case (aceFinder(dealer) == 21):
+                 totaldealer = 21;
+                 break;
+               case (aceEleven > totalplayer && aceEleven <= 21):
+                 totaldealer = aceEleven;
+                 break;
+                case (aceEleven > totalplayer && aceEleven > 21):
+                  totaldealer = aceOne;
+                  break;
+
+             }
+           }  dealer = additionalCard(dealer);//-------------------------------------deal additional card to dealer, until he either wins or busts.
+              totaldealer = getTotal(dealer);
+              console.log("dealer" + getTotal(dealer));
+              console.log("dealer has " + dealer);
+              console.log("player" + totalplayer);
+
+  } return dealer;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,11 +124,12 @@ function additionalCard(cardHolder){
 ////////////////////////////////////////////////////////////////////////////////
 function canPlay(total){
   switch (true){
-    case (total > 22):
+    case (total >= 22):
       console.log("Bust");
       break;
     case (total == 21):
       console.log("Blackjack!");
+      total = 21;
       break;
     case (total <= 20):
       console.log("Hit?");
@@ -108,30 +137,30 @@ function canPlay(total){
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
-//-----------------------------Is there an Ace ?------------------------------//
+//------------------------Does the player have an Ace ?-----------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function ace(value){ return value === 1; }
 
-function showDoubleValues(cardHolder){
+function showAceValues(cardHolder){
   var valueAsOne =  (getTotal(cardHolder));
   var valueAsEleven = valueAsOne+10;
   switch(true){
-    case ( valueAsEleven == 21):
+    case ( valueAsEleven == 21 ):
       console.log("Blackjack!");
-      break;
-    case ( valueAsOne < 12):
+      return valueAsEleven;
+    case ( valueAsOne < 12 ):
       console.log(valueAsOne + " or " + valueAsEleven);
-      break;
-    case ( valueAsOne >= 12):
+      return valueAsEleven;
+    case ( valueAsOne >= 12 ):
       console.log(valueAsOne);
-      break;
+      return valueAsOne;
   }
 }
 
 function aceFinder(cardHolder){
   var cardValues = cardsValueOnly(cardHolder);
   var output = ( cardValues.find(ace) === 1) ?
-                showDoubleValues(cardHolder) : getTotal(cardHolder);
+                showAceValues(cardHolder) : getTotal(cardHolder);
   return output;
 }
 
