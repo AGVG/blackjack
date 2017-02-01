@@ -31,10 +31,10 @@ var newDeck = new Shuffle(deck);//----------------------------------------------
 function deal(){
   playerCards = newDeck.splice(0,2);//-----------------------------------------------dealt player cards
   dealerCards = newDeck.splice(0,1);//-----------------------------------------------dealt dealer cards
-  cardsValueOnly(playerCards);
-  console.log(playerCards);//--------------------------------------------------------shows player card values
-  cardsValueOnly(dealerCards);
-  console.log(dealerCards);//--------------------------------------------------------shows dealer card values
+  console.log(cardsValueOnly(playerCards));//----------------------------------------shows player card values
+  console.log(cardsValueOnly(dealerCards));//----------------------------------------shows dealer card values
+  aceFinder(playerCards);//----------------------------------------------------------shows in the output ace as 1 or 11
+  aceFinder(dealerCards);
 }
 
 //------------------------------------Hit?------------------------------------//
@@ -42,7 +42,7 @@ function deal(){
 function hit(){
    playerCards = additionalCard(playerCards);//--------------------------------------player cards +1
    var totalValues = getTotal(playerCards);
-   isBust(totalValues);//------------------------------------------------------------player situation: Bust || Blackjack || Hit
+   canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit
    console.log(totalValues);//-------------------------------------------------------total value
 }
 
@@ -50,7 +50,10 @@ function hit(){
 ////////////////////////////////////////////////////////////////////////////////
 
 function stand(){
-
+  while (getTotal(dealerCards) < getTotal(playerCards) &&
+         getTotal(dealerCards) > 16 ){//---------------------------------------------dealer cannot stand under 17
+    dealerCards = additionalCard(dealerCards);//-------------------------------------deal additional card to dealer, until he either wins or busts.
+  } console.log (dealerCards); return dealerCards;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +94,7 @@ function additionalCard(cardHolder){
 ////////////////////////////////////////////////////////////////////////////////
 //-----------------------------------Bust?------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
-function isBust(total){
+function canPlay(total){
   switch (true){
     case (total > 22):
       console.log("Bust");
@@ -104,6 +107,34 @@ function isBust(total){
       break;
   }
 }
+////////////////////////////////////////////////////////////////////////////////
+//-----------------------------Is there an Ace ?------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+function ace(value){ return value === 1; }
+
+function showDoubleValues(cardHolder){
+  var valueAsOne =  (getTotal(cardHolder));
+  var valueAsEleven = valueAsOne+10;
+  switch(true){
+    case ( valueAsEleven == 21):
+      console.log("Blackjack!");
+      break;
+    case ( valueAsOne < 12):
+      console.log(valueAsOne + " or " + valueAsEleven);
+      break;
+    case ( valueAsOne >= 12):
+      console.log(valueAsOne);
+      break;
+  }
+}
+
+function aceFinder(cardHolder){
+  var cardValues = cardsValueOnly(cardHolder);
+  var output = ( cardValues.find(ace) === 1) ?
+                showDoubleValues(cardHolder) : getTotal(cardHolder);
+  return output;
+}
+
 //---------------------------------Split?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 // function split(){
