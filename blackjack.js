@@ -31,6 +31,8 @@ var newDeck = new Shuffle(clonedDeck);//----------------------------------------
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
+  var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
+
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
   $(".winOrlosePlayer").text("");//--------------------------------------------------emptys win or lose from already played game
@@ -57,9 +59,9 @@ function deal(){//--------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){//--------------------------------------------------------------------deals an additional card to the player each time hit is clicked
    player = additionalCard(player);
-   standValues(player);
    var totalValues = getTotal(player);
    canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit?
+   standValues(player);
 
    $( ".player" ).empty();//---------------------------------------------------------doesn't double the card node
    showCardImage(player, ".player");//-----------------------------------------------updates the additional card to display
