@@ -31,6 +31,8 @@ var newDeck = new Shuffle(clonedDeck);//----------------------------------------
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
+  var deck;
+  var clonedDeck = deck.slice(0);
   var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
 
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
