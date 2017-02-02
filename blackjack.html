@@ -14,10 +14,15 @@
     <div class="dealer"></div>
   </div>
   <img src="./Cards/blackjack.png" id="title">
-  <div class=""></div>
-  <button onClick="deal()">PLAY</button>
-  <button onClick="hit()">HIT</button>
-  <button onClick="stand()" id="#stand">STAND</button>
+  <div class="text-container">
+    <div class="dealer-text"><strong>DEALER </strong><span class="dealer-score">0</span></div><span class="winOrloseDealer"></span>
+    <div class="player-text"><strong>PLAYER </strong><span class="player-score">0</span></div><span class="winOrlosePlayer"></span>
+  </div>
+  <div class="button-container">
+    <button onClick="deal()" id="deal"><strong>PLAY</strong></button>
+    <button class="hidden" id="hit"><strong>HIT</strong></button>
+    <button class="hidden" id="stand"><strong>STAND</strong></button>
+  </div>
 
 
 <!-- Scripts -->

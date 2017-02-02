@@ -1,5 +1,42 @@
+*{
+  font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+}
+
 body{
   background-color: #083C00;
+}
+
+button{
+  background-color: #083C00;
+  color: white;
+  padding: 4px 10px;
+  margin-right:5px;
+  text-align: center;
+  font-size: 16px;
+  border: 1px dotted white;
+}
+
+button:active{
+  background-color:#127e00;
+}
+
+
+
+.hidden{
+  color: #127e00;
+  border:1px dotted #127e00;
+}
+
+.button-container{
+  position: absolute;
+  margin: auto;
+  top: -130px;
+  bottom: 0;
+  right: 0;
+  left:750px;
+  width: 250px;
+  height: 40px;
+  /*background-color: red;*/
 }
 
 .container{
@@ -21,10 +58,44 @@ body{
   margin: auto;
   top: 0;
   bottom: 0;
-  right: -880px;
-  left: 0px;
+  right: 0;
+  left: 880px;
   padding-bottom: 10px;
   border-bottom: 2px dotted #648F00;
+}
+
+.text-container{
+  position: absolute;
+  margin: auto;
+  top: 270px;
+  bottom: 0;
+  right: 0;
+  left: 880px;
+  height:170px;
+  width:370px;
+}
+
+.dealer-text{
+  text-align: left;
+  font-size:20px;
+  color: hsla(100, 0%, 100%, 0.9);
+}
+
+.player-text{
+  padding-top:20px;
+  text-align: left;
+  font-size:20px;
+  color: hsla(100, 0%, 100%, 0.9);
+}
+
+.dealer-score, .player-score{
+  font-size: 18px;
+}
+
+.winOrloseDealer, .winOrlosePlayer{
+  font-size:16px;
+  color: hsla(100, 0%, 100%, 0.9);
+  border-bottom: 2px dotted #127e00;
 }
 
 #img{

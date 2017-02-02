@@ -24,21 +24,28 @@ function Shuffle(cards){
 ////////////////////////////////////////////////////////////////////////////////
 var player = [];
 var dealer = [];
-var newDeck = new Shuffle(deck);//---------------------------------------------------shuffled deck
 
-
-// var test = [[ "AC", [1]], [ "AH", [2]]];//----------------------------------FOR TESTING!!!!11!!
-
+var newDeck = new Shuffle(deck);//-----------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){
+  $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
+  $( ".dealer" ).empty();
   player = newDeck.splice(0,2);//----------------------------------------------------dealt player cards
-  dealer = newDeck.splice(0,1);//----------------------------------------------------dealt dealer cards
-  console.log(cardsValueOnly(player));//---------------------------------------------shows player card values
-  console.log(cardsValueOnly(dealer));//---------------------------------------------shows dealer card values
-  showCardImage(player, ".player");
+  dealer = newDeck.splice(0,1);
+  showCardImage(player, ".player");//------------------------------------------------displays player cards
   showCardImage(dealer, ".dealer");
+  $(".player-score").text(standValues(player));//------------------------------------updates player score
+  $(".dealer-score").text(getTotal(dealer));
+  var totalValues = getTotal(player);
+  canPlay(totalValues);//------------------------------------------------------------player situation: Bust || Blackjack || Hit?
+  $("#deal").attr("onClick", null);
+  $("#deal").attr("class", "hidden");
+  $("#hit").attr("onClick", "hit()");
+  $("#hit").attr("class", null);
+  $("#stand").attr("onClick", "stand()");
+  $("#stand").attr("class", null);
 }
 
 //------------------------------------Hit?------------------------------------//
@@ -53,6 +60,8 @@ function hit(){
    $( ".dealer" ).empty();
    showCardImage(player, ".player");
    showCardImage(dealer, ".dealer");
+   $(".player-score").text(getTotal(player));
+   $(".dealer-score").text(getTotal(dealer));
 }
 
 //-----------------------------------Stand------------------------------------//
@@ -70,10 +79,8 @@ function stand(){
                 dealer = additionalCard(dealer);//-----------------------------------deal additional card to dealer, until he either wins or busts.
                 totaldealer = getTotal(dealer);
                 $( ".dealer" ).empty();
+                $(".dealer-score").text(totaldealer);
                 showCardImage(dealer, ".dealer");
-                console.log("dealer" + getTotal(dealer));
-                console.log("dealer has " + dealer);
-                console.log("player" + totalplayer);
 
              } else {
               var aceOne = totaldealer;//---------------------------------------------Ace as value 1
@@ -83,35 +90,38 @@ function stand(){
                 case (aceEleven == 21):
                   totaldealer = 21;
                   $( ".dealer" ).empty();
+                  $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
-                  console.log(totaldealer);
-                  console.log(dealer);
                   break;
                 case (aceEleven > totalplayer && aceEleven <= 21):
                   totaldealer = aceEleven;
                   $( ".dealer" ).empty();
+                  $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
-                  console.log(totaldealer);
-                  console.log(dealer);
                   break;
                  case (aceEleven > totalplayer && aceEleven > 21):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
                    $( ".dealer" ).empty();
+                   $(".dealer-score").text(totaldealer);
                    showCardImage(dealer, ".dealer");
-                   console.log(totaldealer);
-                   console.log(dealer);
                    break;
                  case (aceEleven < totalplayer):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
                    $( ".dealer" ).empty();
+                   $(".dealer-score").text(totaldealer);
                    showCardImage(dealer, ".dealer");
-                   console.log(totaldealer);
-                   console.log(dealer);
                    break;}
   }
-  } return dealer;
+} $("#deal").attr("onClick", "deal()");
+  $("#deal").attr("class", null);
+  $("#hit").attr("onClick", null);
+  $("#hit").attr("class", "hidden");
+  $("#stand").attr("onClick", null);
+  $("#stand").attr("class", "hidden");
+  var newDeck = new Shuffle(deck);
+  return winOrlose(totalplayer, totaldealer);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,19 +160,28 @@ function additionalCard(cardHolder){
    return cardHolder;
 }
 ////////////////////////////////////////////////////////////////////////////////
-//-----------------------------------Bust?------------------------------------//
+//---------------------------Hit? Bust? BlackJack?----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function canPlay(total){
   switch (true){
     case (total >= 22):
-      console.log("Bust");
+     $(".winOrlosePlayer").text("Busts");
+     $(".winOrloseDealer").text("Wins");
+     $("#deal").attr("onClick", "deal()");
+     $("#deal").attr("class", null);
+     $("#hit").attr("onClick", null);
+     $("#hit").attr("class", "hidden");
+     $("#stand").attr("onClick", null);
+     $("#stand").attr("class", "hidden");
+     var newDeck = new Shuffle(deck);
       break;
     case (total == 21):
-      console.log("Blackjack!");
+    stand();
+    $(".winOrlosePlayer").text("BlackJack!");
       total = 21;
       break;
     case (total <= 20):
-      console.log("Hit?");
+    $(".winOrlosePlayer").text("Hit ?");
       break;
   }
 }
@@ -186,11 +205,14 @@ function showAceValues(cardHolder){
   switch(true){
     case ( valueAsEleven == 21 ):
       console.log("Blackjack!");
+      $(".player-score").text(valueAsEleven);
       return valueAsEleven;
     case ( valueAsOne < 12 ):
       console.log(valueAsOne + " or " + valueAsEleven);
+      $(".player-score").text(valueAsEleven);
       return valueAsEleven;
     case ( valueAsOne >= 12 ):
+      $(".player-score").text(valueAsOne);
       console.log(valueAsOne);
       return valueAsOne;
   }
@@ -216,6 +238,43 @@ function showCardImage(cardHolder, position){
 }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//-----------------------------Show Card Image--------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+function winOrlose(cardHolder1, cardHolder2){
+
+  switch(true){
+    case (cardHolder1 < cardHolder2 && cardHolder2 > 21):
+        $(".winOrlosePlayer").text("Wins");
+        $(".winOrloseDealer").text("Busts");
+      break;
+    case (cardHolder1 > cardHolder2 && cardHolder1.length == 2 && cardHolder1 == 21):
+        $(".winOrlosePlayer").text("BlackJack!");
+        $(".winOrloseDealer").text("Loses");
+      break;
+    case (cardHolder1 = cardHolder2 && cardHolder1.length == 2 && cardHolder2.length == 2 && cardHolder1 == 21):
+        $(".winOrlosePlayer").text("BlackJack!");
+        $(".winOrloseDealer").text("Loses");
+      break;
+    case (cardHolder1 = cardHolder2 && cardHolder1.length == 2 && cardHolder2.length !== 2 && cardHolder1 == 21):
+        $(".winOrlosePlayer").text("BlackJack!");
+        $(".winOrloseDealer").text("Loses");
+      break;
+    case (cardHolder1 = cardHolder2 && cardHolder1.length !== 2 && cardHolder2.length == 2 && cardHolder1 == 21):
+        $(".winOrlosePlayer").text("Loses");
+        $(".winOrloseDealer").text("BlackJack!");
+      break;
+    case (cardHolder1 = cardHolder2 && cardHolder1.length !== 2 && cardHolder2.length !== 2 && cardHolder1 == 21):
+        $(".winOrlosePlayer").text("Loses");
+        $(".winOrloseDealer").text("Wins");
+      break;
+    case (cardHolder1 < cardHolder2 && cardHolder2 <= 21):
+        $(".winOrlosePlayer").text("Loses");
+        $(".winOrloseDealer").text("Wins");
+      break;
+  }
+
+}
 
 //---------------------------------Split?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
