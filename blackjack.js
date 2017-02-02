@@ -25,7 +25,8 @@ function Shuffle(cards){
 var player = [];
 var dealer = [];
 
-var newDeck = new Shuffle(deck);//-----------------------------------------------------shuffled deck
+var clonedDeck = deck.slice(0);
+var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +140,8 @@ function stand(){//-------------------------------------------------------------
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
 
-  var newDeck = new Shuffle(deck);//-------------------------------------------------new deck for a new game
+  var clonedDeck = deck.slice(0);
+  var newDeck = new Shuffle(clonedDeck);//-------------------------------------------new deck for a new game
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
 
@@ -192,7 +194,8 @@ function canPlay(total){
      $("#hit").attr("class", "hidden");
      $("#stand").attr("onClick", null);
      $("#stand").attr("class", "hidden");
-     var newDeck = new Shuffle(deck);
+     var clonedDeck = deck.slice(0);
+     var newDeck = new Shuffle(clonedDeck);
       break;
     case (total == 21 && player.length == 2):
     stand();
@@ -319,7 +322,7 @@ function winOrlose(cardHolder1, cardHolder2){
 //   deal();
 //   var cardValues;
 //
-//   var sorted_values = cardValues.slice().sort();
+//   var sorted_values = cardValues.splice().sort();
 //   var results = [];
 //
 //   for (var i = 0; i < cardValues.length - 1; i++) {
