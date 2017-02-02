@@ -30,14 +30,14 @@ function CloneDeck(cards){//----------------------------------------------------
 var player = [];
 var dealer = [];
 
-
-var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
+var clonedDeck = new CloneDeck(deck);
+var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
-  var deck;
-  var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
+  // var deck;
+  // var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
 
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
@@ -80,6 +80,7 @@ function hit(){//---------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////
 
 function stand(){//------------------------------------------------------------------deals an additional card to dealer, until he either wins or busts
+  var deck;
   var totalplayer = standValues(player);
   var totaldealer = getTotal(dealer);
 
@@ -148,8 +149,8 @@ function stand(){//-------------------------------------------------------------
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
 
-  var deck;
-  var newDeck = new Shuffle(new CloneDeck(deck));//----------------------------------new deck for a new game
+  var clonedDeck = new CloneDeck(deck);
+  var newDeck = new Shuffle(clonedDeck);//----------------------------------new deck for a new game
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
 
@@ -203,7 +204,8 @@ function canPlay(total){
      $("#stand").attr("onClick", null);
      $("#stand").attr("class", "hidden");
      var deck;
-     var newDeck = new Shuffle(new CloneDeck(deck));
+     var clonedDeck = new CloneDeck(deck);
+     var newDeck = new Shuffle(clonedDeck);
       break;
     case (total == 21 && player.length == 2):
     stand();
