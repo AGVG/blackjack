@@ -20,20 +20,24 @@ function Shuffle(cards){
   } return cards;
 }
 
+function CloneDeck(cards){//---------------------------------------------------------deck cloner
+  var clonedDeck = cards.slice(0);
+  return clonedDeck;
+}
+
 //--------------------------------Constants-----------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 var player = [];
 var dealer = [];
 
-var clonedDeck = deck.slice(0);
-var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
+
+var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
   var deck;
-  var clonedDeck = deck.slice(0);
-  var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
+  var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
 
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
@@ -144,8 +148,8 @@ function stand(){//-------------------------------------------------------------
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
 
-  var clonedDeck = deck.slice(0);
-  var newDeck = new Shuffle(clonedDeck);//-------------------------------------------new deck for a new game
+  var deck;
+  var newDeck = new Shuffle(new CloneDeck(deck));//----------------------------------new deck for a new game
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
 
@@ -198,8 +202,8 @@ function canPlay(total){
      $("#hit").attr("class", "hidden");
      $("#stand").attr("onClick", null);
      $("#stand").attr("class", "hidden");
-     var clonedDeck = deck.slice(0);
-     var newDeck = new Shuffle(clonedDeck);
+     var deck;
+     var newDeck = new Shuffle(new CloneDeck(deck));
       break;
     case (total == 21 && player.length == 2):
     stand();
