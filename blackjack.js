@@ -42,10 +42,11 @@ function deal(){//--------------------------------------------------------------
     [ "AS", [1]], [ "2S", [2]], [ "3S", [3]], [ "4S", [4]], [ "5S", [5]], [ "6S", [6]], [ "7S", [7]], [ "8S", [8]], [ "9S", [9]], [ "10S", [10]], [ "JS", [10]], [ "QS", [10]], [ "KS", [10]],
     [ "AD", [1]], [ "2D", [2]], [ "3D", [3]], [ "4D", [4]], [ "5D", [5]], [ "6D", [6]], [ "7D", [7]], [ "8D", [8]], [ "9D", [9]], [ "10D", [10]], [ "JD", [10]], [ "QD", [10]], [ "KD", [10]]
   ];
-
-
-  var cloneDeck = new CloneDeck(deck);
-  var newDeck = new Shuffle(cloneDeck);
+  newDeck = new Shuffle(new CloneDeck(deck));
+  newDeck = (newDeck.length !== 52)? newDeck = new Shuffle(new CloneDeck(deck)) : newDeck = new Shuffle(new CloneDeck(deck));
+  // $("#deal").click(function(){
+  //   var newDeck = new Shuffle(new CloneDeck(deck));
+  // });
 
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
