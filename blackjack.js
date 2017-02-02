@@ -21,8 +21,8 @@ function Shuffle(cards){
 }
 
 function CloneDeck(cards){//---------------------------------------------------------deck cloner
-  var clonedDeck = cards.slice(0);
-  return clonedDeck;
+  var cloneDeck = cards.slice(0);
+  return cloneDeck;
 }
 
 //--------------------------------Constants-----------------------------------//
@@ -30,14 +30,22 @@ function CloneDeck(cards){//----------------------------------------------------
 var player = [];
 var dealer = [];
 
-var clonedDeck = new CloneDeck(deck);
-var newDeck = new Shuffle(clonedDeck);//-----------------------------------------------------shuffled deck
+var cloneDeck = new CloneDeck(deck);
+var newDeck = new Shuffle(cloneDeck);//-----------------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
-  // var deck;
-  // var newDeck = new Shuffle(new CloneDeck(deck));//-----------------------------------------------------shuffled deck
+  var deck = [
+    [ "AC", [1]], [ "2C", [2]], [ "3C", [3]], [ "4C", [4]], [ "5C", [5]], [ "6C", [6]], [ "7C", [7]], [ "8C", [8]], [ "9C", [9]], [ "10C", [10]], [ "JC", [10]], [ "QC", [10]], [ "KC", [10]],
+    [ "AH", [1]], [ "2H", [2]], [ "3H", [3]], [ "4H", [4]], [ "5H", [5]], [ "6H", [6]], [ "7H", [7]], [ "8H", [8]], [ "9H", [9]], [ "10H", [10]], [ "JH", [10]], [ "QH", [10]], [ "KH", [10]],
+    [ "AS", [1]], [ "2S", [2]], [ "3S", [3]], [ "4S", [4]], [ "5S", [5]], [ "6S", [6]], [ "7S", [7]], [ "8S", [8]], [ "9S", [9]], [ "10S", [10]], [ "JS", [10]], [ "QS", [10]], [ "KS", [10]],
+    [ "AD", [1]], [ "2D", [2]], [ "3D", [3]], [ "4D", [4]], [ "5D", [5]], [ "6D", [6]], [ "7D", [7]], [ "8D", [8]], [ "9D", [9]], [ "10D", [10]], [ "JD", [10]], [ "QD", [10]], [ "KD", [10]]
+  ];
+
+
+  var cloneDeck = new CloneDeck(deck);
+  var newDeck = new Shuffle(cloneDeck);
 
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
@@ -80,7 +88,6 @@ function hit(){//---------------------------------------------------------------
 ////////////////////////////////////////////////////////////////////////////////
 
 function stand(){//------------------------------------------------------------------deals an additional card to dealer, until he either wins or busts
-  var deck;
   var totalplayer = standValues(player);
   var totaldealer = getTotal(dealer);
 
@@ -149,8 +156,6 @@ function stand(){//-------------------------------------------------------------
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
 
-  var clonedDeck = new CloneDeck(deck);
-  var newDeck = new Shuffle(clonedDeck);//----------------------------------new deck for a new game
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
 
@@ -203,9 +208,6 @@ function canPlay(total){
      $("#hit").attr("class", "hidden");
      $("#stand").attr("onClick", null);
      $("#stand").attr("class", "hidden");
-     var deck;
-     var clonedDeck = new CloneDeck(deck);
-     var newDeck = new Shuffle(clonedDeck);
       break;
     case (total == 21 && player.length == 2):
     stand();
