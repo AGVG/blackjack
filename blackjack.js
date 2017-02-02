@@ -32,6 +32,9 @@ var newDeck = new Shuffle(deck);//----------------------------------------------
 function deal(){//-------------------------------------------------------------------deals the initial cards to the player and dealer
   $( ".player" ).empty();//----------------------------------------------------------emptys already played cards from previous game
   $( ".dealer" ).empty();
+  $(".winOrlosePlayer").text("");//--------------------------------------------------emptys win or lose from already played game
+  $(".winOrloseDealer").text("");
+
   player = newDeck.splice(0,2);//----------------------------------------------------dealt player cards
   dealer = newDeck.splice(0,1);
   showCardImage(player, ".player");//------------------------------------------------displays player cards
@@ -40,6 +43,7 @@ function deal(){//--------------------------------------------------------------
   $(".dealer-score").text(getTotal(dealer));
   var totalValues = getTotal(player);
   canPlay(totalValues);//------------------------------------------------------------player situation: Bust || Blackjack || Hit?
+
   $("#deal").attr("onClick", null);//------------------------------------------------enables play, and ables hit and stand
   $("#deal").attr("class", "hidden");
   $("#hit").attr("onClick", "hit()");
@@ -55,11 +59,10 @@ function hit(){//---------------------------------------------------------------
    standValues(player);
    var totalValues = getTotal(player);
    canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit?
-   console.log(totalValues);//-------------------------------------------------------total value
-   $( ".player" ).empty();
-   $( ".dealer" ).empty();
-   showCardImage(player, ".player");
-   showCardImage(dealer, ".dealer");
+
+   $( ".player" ).empty();//---------------------------------------------------------doesn't double the card node
+   showCardImage(player, ".player");//-----------------------------------------------updates the additional card to display
+
    $(".player-score").text(getTotal(player));
    $(".dealer-score").text(getTotal(dealer));
 }
@@ -88,18 +91,21 @@ function stand(){//-------------------------------------------------------------
               switch (true){
                 case (aceEleven == 21 && dealer.length == 2):
                   totaldealer = 21;
+
                   $( ".dealer" ).empty();
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
                   break;
                 case (aceEleven == 21 && dealer.length !== 2):
                   totaldealer = 21;
+
                   $( ".dealer" ).empty();
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
                   break;
                 case (aceEleven > totalplayer && aceEleven <= 21):
                   totaldealer = aceEleven;
+
                   $( ".dealer" ).empty();
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
@@ -107,6 +113,7 @@ function stand(){//-------------------------------------------------------------
                  case (aceEleven > totalplayer && aceEleven > 21):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
+
                    $( ".dealer" ).empty();
                    $(".dealer-score").text(totaldealer);
                    showCardImage(dealer, ".dealer");
@@ -114,17 +121,19 @@ function stand(){//-------------------------------------------------------------
                  case (aceEleven < totalplayer):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
+
                    $( ".dealer" ).empty();
                    $(".dealer-score").text(totaldealer);
                    showCardImage(dealer, ".dealer");
                    break;}
   }
-} $("#deal").attr("onClick", "deal()");//--------------------------------------------play again enabling, and disabling hit and stand
+} $("#deal").attr("onClick", "deal()");//--------------------------------------------button play again enabled, and disabling hit and stand
   $("#deal").attr("class", null);
   $("#hit").attr("onClick", null);
   $("#hit").attr("class", "hidden");
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
+
   var newDeck = new Shuffle(deck);//-------------------------------------------------new deck for a new game
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
