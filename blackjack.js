@@ -26,6 +26,10 @@ var player = [];
 var dealer = [];
 var newDeck = new Shuffle(deck);//---------------------------------------------------shuffled deck
 
+
+// var test = [[ "AC", [1]], [ "AH", [2]]];//----------------------------------FOR TESTING!!!!11!!
+
+
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function deal(){
@@ -33,54 +37,80 @@ function deal(){
   dealer = newDeck.splice(0,1);//----------------------------------------------------dealt dealer cards
   console.log(cardsValueOnly(player));//---------------------------------------------shows player card values
   console.log(cardsValueOnly(dealer));//---------------------------------------------shows dealer card values
-  aceFinder(player);//---------------------------------------------------------------shows in the output ace as 1 or 11
+  showCardImage(player, ".player");
+  showCardImage(dealer, ".dealer");
 }
 
 //------------------------------------Hit?------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function hit(){
    player = additionalCard(player);//------------------------------------------------player cards +1
-   aceFinder(player);
+   standValues(player);
    var totalValues = getTotal(player);
-   canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit
+   canPlay(totalValues);//-----------------------------------------------------------player situation: Bust || Blackjack || Hit?
    console.log(totalValues);//-------------------------------------------------------total value
+   $( ".player" ).empty();
+   $( ".dealer" ).empty();
+   showCardImage(player, ".player");
+   showCardImage(dealer, ".dealer");
 }
 
 //-----------------------------------Stand------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////
 
 function stand(){
-  var playerValues = cardsValueOnly(player);
-  var totalplayer = (playerValues.find(ace) === 1) ?
-                     showAceValues(player) : getTotal(player);//---------------------did the player stand with an ace
+  var totalplayer = standValues(player);
 
   var totaldealer = getTotal(dealer);
 
   while (totaldealer < 17 ||//-------------------------------------------------------dealer cannot stand under 17
          totaldealer < totalplayer ){
 
-           if (aceFinder(dealer) < totalplayer){//-------------------------------------------------checks if dealer has an Ace
-             var aceOne = getTotal(dealer);//----------------------------------------Ace as value 1
-             var aceEleven = aceOne+10;//--------------------------------------------Ace as value 11
+           if (aceFinder(dealer) === false){//---------------------------------------checks if dealer has an Ace
+                dealer = additionalCard(dealer);//-----------------------------------deal additional card to dealer, until he either wins or busts.
+                totaldealer = getTotal(dealer);
+                $( ".dealer" ).empty();
+                showCardImage(dealer, ".dealer");
+                console.log("dealer" + getTotal(dealer));
+                console.log("dealer has " + dealer);
+                console.log("player" + totalplayer);
 
-             switch (true){
-               case (aceFinder(dealer) == 21):
-                 totaldealer = 21;
-                 break;
-               case (aceEleven > totalplayer && aceEleven <= 21):
-                 totaldealer = aceEleven;
-                 break;
-                case (aceEleven > totalplayer && aceEleven > 21):
-                  totaldealer = aceOne;
+             } else {
+              var aceOne = totaldealer;//---------------------------------------------Ace as value 1
+              var aceEleven = aceOne+10;//--------------------------------------------Ace as value 11
+
+              switch (true){
+                case (aceEleven == 21):
+                  totaldealer = 21;
+                  $( ".dealer" ).empty();
+                  showCardImage(dealer, ".dealer");
+                  console.log(totaldealer);
+                  console.log(dealer);
                   break;
-
-             }
-           }  dealer = additionalCard(dealer);//-------------------------------------deal additional card to dealer, until he either wins or busts.
-              totaldealer = getTotal(dealer);
-              console.log("dealer" + getTotal(dealer));
-              console.log("dealer has " + dealer);
-              console.log("player" + totalplayer);
-
+                case (aceEleven > totalplayer && aceEleven <= 21):
+                  totaldealer = aceEleven;
+                  $( ".dealer" ).empty();
+                  showCardImage(dealer, ".dealer");
+                  console.log(totaldealer);
+                  console.log(dealer);
+                  break;
+                 case (aceEleven > totalplayer && aceEleven > 21):
+                   dealer = additionalCard(dealer);
+                   totaldealer = getTotal(dealer);
+                   $( ".dealer" ).empty();
+                   showCardImage(dealer, ".dealer");
+                   console.log(totaldealer);
+                   console.log(dealer);
+                   break;
+                 case (aceEleven < totalplayer):
+                   dealer = additionalCard(dealer);
+                   totaldealer = getTotal(dealer);
+                   $( ".dealer" ).empty();
+                   showCardImage(dealer, ".dealer");
+                   console.log(totaldealer);
+                   console.log(dealer);
+                   break;}
+  }
   } return dealer;
 }
 
@@ -137,6 +167,15 @@ function canPlay(total){
   }
 }
 ////////////////////////////////////////////////////////////////////////////////
+//----------------------------Ace Finder Function-----------------------------//
+////////////////////////////////////////////////////////////////////////////////
+  function aceFinder(cardHolder){
+   var cardvalues = cardsValueOnly(cardHolder);
+   var trueOrFalse = (cardvalues.find(ace) === 1) ? true : false;
+   return trueOrFalse;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
 //------------------------Does the player have an Ace ?-----------------------//
 ////////////////////////////////////////////////////////////////////////////////
 function ace(value){ return value === 1; }
@@ -157,12 +196,26 @@ function showAceValues(cardHolder){
   }
 }
 
-function aceFinder(cardHolder){
+function standValues(cardHolder){
   var cardValues = cardsValueOnly(cardHolder);
   var output = ( cardValues.find(ace) === 1) ?
                 showAceValues(cardHolder) : getTotal(cardHolder);
   return output;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//-----------------------------Show Card Image--------------------------------//
+////////////////////////////////////////////////////////////////////////////////
+function showCardImage(cardHolder, position){
+  var cards = [];
+  for(var i=0; i < cardHolder.length; i++){
+  cards = cards.concat(cardHolder[i][0]);
+  console.log("this is a test" + cards);
+}    for(var img=0; img < cards.length; img++){
+      $(position).append("<img src =\"./Cards/"+cards[img]+".jpg\" id=\"img\">");
+}
+}
+
 
 //---------------------------------Split?-------------------------------------//
 ////////////////////////////////////////////////////////////////////////////////

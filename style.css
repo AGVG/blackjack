@@ -1,11 +1,57 @@
+body{
+  background-color: #083C00;
+}
+
 .container{
   position:absolute;
   margin: auto;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: -170px;
   right: 0;
   width: 600px;
   height: 400px;
   background-color: #127e00;
+  border: 5px solid #648F00;
+  outline: 8px solid #127e00;
+}
+
+#title{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: -880px;
+  left: 0px;
+  padding-bottom: 10px;
+  border-bottom: 2px dotted #648F00;
+}
+
+#img{
+  padding-left:3px;
+}
+
+.player{
+  position:absolute;
+  top: 280px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 9px;
+  text-align:center;
+  background-color: #648F00;
+  border-top: 2px solid white;
+  height:109px;
+}
+
+.dealer{
+  position:absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align:center;
+  /*background-color: red;*/
+  margin-top:15px;
+  height:100px;
 }
