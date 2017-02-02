@@ -89,6 +89,7 @@ function stand(){//-------------------------------------------------------------
               var aceEleven = aceOne+10;//--------------------------------------------Ace as value 11
 
               switch (true){
+
                 case (aceEleven == 21 && dealer.length == 2):
                   totaldealer = 21;
 
@@ -96,6 +97,7 @@ function stand(){//-------------------------------------------------------------
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
                   break;
+
                 case (aceEleven == 21 && dealer.length !== 2):
                   totaldealer = 21;
 
@@ -103,13 +105,15 @@ function stand(){//-------------------------------------------------------------
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
                   break;
-                case (aceEleven > totalplayer && aceEleven <= 21):
+
+                case (aceEleven >= totalplayer && aceEleven <= 21):
                   totaldealer = aceEleven;
 
                   $( ".dealer" ).empty();
                   $(".dealer-score").text(totaldealer);
                   showCardImage(dealer, ".dealer");
                   break;
+
                  case (aceEleven > totalplayer && aceEleven > 21):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
@@ -118,6 +122,7 @@ function stand(){//-------------------------------------------------------------
                    $(".dealer-score").text(totaldealer);
                    showCardImage(dealer, ".dealer");
                    break;
+
                  case (aceEleven < totalplayer):
                    dealer = additionalCard(dealer);
                    totaldealer = getTotal(dealer);
