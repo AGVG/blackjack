@@ -73,7 +73,7 @@ function hit(){//---------------------------------------------------------------
    showCardImage(player, ".player");//-----------------------------------------------updates the additional card to display
 
    $(".player-score").text(getTotal(player));
-   $(".dealer-score").text(getTotal(dealer));
+   $(".dealer-score").text(dealer[0][1]);
 }
 
 //-----------------------------------Stand------------------------------------//
