@@ -148,6 +148,7 @@ function stand(){//-------------------------------------------------------------
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
 
+  showCardImage(dealer, ".dealer");
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
 
