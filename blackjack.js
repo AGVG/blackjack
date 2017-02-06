@@ -31,7 +31,7 @@ var player = [];
 var dealer = [];
 
 var cloneDeck = new CloneDeck(deck);
-var newDeck = new Shuffle(cloneDeck);//-----------------------------------------------------shuffled deck
+var newDeck = new Shuffle(cloneDeck);//----------------------------------------------shuffled deck
 
 //----------------------------Initial Dealt Cards-----------------------------//
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +147,7 @@ function stand(){//-------------------------------------------------------------
   $("#hit").attr("class", "hidden");
   $("#stand").attr("onClick", null);
   $("#stand").attr("class", "hidden");
-
+  $( ".dealer" ).empty();
   showCardImage(dealer, ".dealer");
   return winOrlose(totalplayer, totaldealer);//--------------------------------------displays who won
 }
